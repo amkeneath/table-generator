@@ -9,7 +9,7 @@
 
 
 ```bash
-npm add --save @stl-davao/table-generator
+npm i --save @stl-davao/table-generator
 ```
 
 ## Usage
@@ -24,12 +24,17 @@ plugins: [
 ]
 ```
 
-#### table-generator-client.js
+#### table-generator.js
 
 ```js
 import tableGenerator from '@stl-davao/table-generator'
 
 export default ({ app }, inject) => {
-  inject('tableGenerator', tableGenerator)
+  inject('table', tableGenerator)
 }
 ```
+
+### Generate Table
+
+```js
+const table = this.$table.generate(tableData)
