@@ -72,7 +72,7 @@ const tableData = {
         { text: 'Cluster/s: All' },
         { text: 'Grand Total: P 34,696.00' }
     ],
-    footer: { format: 'Page [current-page] of [total-page]' },
+    footer: { text: 'Page [current-page] of [total-page]' },
     content: {
         colLayoutCount: 4,
         colLayoutTitle: 'Combi/Amount',
@@ -88,18 +88,69 @@ const tableData = {
 
 ## Data Properties
 
-#### header (Object)
+### header (Object)
+<li>title: A property of header that accepts string value, which will be displayed at the table header in every pages.</li>
 
-##### title (String)
-A property of header that accepts string value, which will be displayed at the table header in every pages.
-
-#### subHeaders (Array of Objects)
+### subHeaders (Array of Objects)
 Sample object inside array: { text: 'Some text' }. All subheaders will be displayed under header in every pages.
 <li>text: A string property of the object that accepts the string to be displayed.</li>
 
-#### footer (Object, Boolean, String)
-This property is optional. Setting this property to false will not display footer in every pages. This defaults to true.
-Alternatively, you can set this with an object value.
+### footer (Object, Boolean, String)
+This property can be optional. Setting this property to false will not display footer in every pages. This defaults to true. Alternatively, you can set this with an object value.
 <li>text: An object property that can be used to override the page display text.</li>
 <li>Use '[current-page]' and '[total-page]' if your footer includes page info.</li>
 <li>Also accepts string value for simplicity which is the same as setting it to an object with text property.</li>
+
+### content (Object)
+This property is used to control what data and how it would be displayed in your table.
+<li>colLayoutCount: An integer property of content. Controls how many column layout is displayed in your table. Defaults to 4</li>
+<li>colLayoutTitle: A string property of content used to display the column group title. You can opt this property if you don't want to display a title for column group.</li>
+<li>itemsRowCount: The content property that limits the number of rows of displayed items in your table. Defaults to 10</li>
+<p> </p>
+
+```js
+colLayoutCount: 4,
+colLayoutTitle: 'Combi/Amount',
+itemsRowCount: 3
+```
+<table><tr> <td class="col-group-title" colspan="2">Combi/Amount</td><td class="col-group-title" colspan="2">Combi/Amount</td><td class="col-group-title" colspan="2">Combi/Amount</td><td class="col-group-title" colspan="2">Combi/Amount</td></tr><tr> <td class="items" colspan="1">000</td><td class="items" colspan="1">725.00</td><td class="items" colspan="1">003</td><td class="items" colspan="1">109.00</td><td class="items" colspan="1">006</td><td class="items" colspan="1">885.00</td><td class="items" colspan="1">009</td><td class="items" colspan="1">278.00</td></tr><tr> <td class="items" colspan="1">001</td><td class="items" colspan="1">957.00</td><td class="items" colspan="1">004</td><td class="items" colspan="1">648.00</td><td class="items" colspan="1">007</td><td class="items" colspan="1">897.00</td><td class="items" colspan="1">010</td><td class="items" colspan="1">647.00</td></tr><tr> <td class="items" colspan="1">002</td><td class="items" colspan="1">516.00</td><td class="items" colspan="1">005</td><td class="items" colspan="1">458.00</td><td class="items" colspan="1">008</td><td class="items" colspan="1">683.00</td><td class="items" colspan="1">011</td><td class="items" colspan="1">11.00</td></tr></table>
+
+<li>itemData: An array String or Object (can be optional). By default, the table will use all the properties of the very first item in your data. If you wish, you can use this property to define which properties of the items will only be displayed, and by doing so you are also free to arange the placement of properties.</li>
+<p> </p>
+
+#### Sample Items
+```js
+/** Sample items **/
+products: [
+  { name: 'Apple', price: 99.82 },
+  { name: 'Strawberry', price: 65.43, color: 'Red' },
+  { name: 'Avocado', price: 68.27, color: 'Green' },
+  { name: 'Banana', price: 44.35, color: 'Yellow' }
+],
+```
+
+#### The content properties.
+```js
+items: products
+colLayoutCount: 2,
+colLayoutTitle: 'Product',
+/** Without specifying the itemData **/
+```
+<table><tr> <td class="col-group-title" colspan="2">Product</td><td class="col-group-title" colspan="2">Product</td><tr> <td class="items" colspan="1">Apple</td><td class="items" colspan="1">99.82</td><td class="items" colspan="1">Strawberry</td><td class="items" colspan="1">65.43</td></tr><tr> <td class="items" colspan="1">Avocado</td><td class="items" colspan="1">68.27</td><td class="items" colspan="1">Banana</td><td class="items" colspan="1">44.35</td></tr></table>
+
+#### The content properties with itemData
+```js
+itemData: ['name', 'color', 'price']
+```
+<table><tr> <td class="col-group-title" colspan="3">Product</td><td class="col-group-title" colspan="3">Product</td><tr> <td class="items" colspan="1">Apple</td><td class="items" colspan="1"></td><td class="items" colspan="1">99.82</td><td class="items" colspan="1">Strawberry</td><td class="items" colspan="1">Red</td><td class="items" colspan="1">65.43</td></tr><tr> <td class="items" colspan="1">Avocado</td><td class="items" colspan="1">Green</td><td class="items" colspan="1">68.27</td><td class="items" colspan="1">Banana</td><td class="items" colspan="1">Yellow</td><td class="items" colspan="1">44.35</td></tr></table>
+
+#### The itemData with array of objects and has a property label
+Adding property label will add a header for each data under the column group title.
+```js
+itemData: [
+  { label: 'Name', value: 'name' },
+  { label: 'Color', value: 'color' },
+  { label: 'Price', value: 'price' }
+]
+```
+<table><tr> <td class="col-group-title" colspan="3">Product</td><td class="col-group-title" colspan="3">Product</td><tr> <td class="items" colspan="1">Name</td><td class="items" colspan="1">Color</td><td class="items" colspan="1">Price</td><td class="items" colspan="1">Name</td><td class="items" colspan="1">Color</td><td class="items" colspan="1">Price</td></tr><tr> <td class="items" colspan="1">Apple</td><td class="items" colspan="1"></td><td class="items" colspan="1">99.82</td><td class="items" colspan="1">Strawberry</td><td class="items" colspan="1">Red</td><td class="items" colspan="1">65.43</td></tr><tr> <td class="items" colspan="1">Avocado</td><td class="items" colspan="1">Green</td><td class="items" colspan="1">68.27</td><td class="items" colspan="1">Banana</td><td class="items" colspan="1">Yellow</td><td class="items" colspan="1">44.35</td></tr></table>
